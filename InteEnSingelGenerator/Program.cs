@@ -4,6 +4,23 @@ using InteEnSingelGenerator;
 const string sourceFile = @"C:\Users\hbom\OneDrive\InteEnSingel\source.txt";
 const string localOutput = @"C:\Users\hbom\OneDrive\InteEnSingel\Output";
 const string title = "Inte en singel";
+const string authorEmail = "anders@winsoft.se";
+const string authorEmailWithName = $"{authorEmail} (Anders Hesselbom)";
+
+/*
+ 
+Source file format: Episode name, release date (YYYY-MM-DD), length (MM:SS)
+
+Example:
+
+Evolution av Scotch (1985)                                 , 2022-11-01, 24:54
+News of the World av Queen (1977)                          , 2022-10-25, 25:55
+The Riddle av Nik Kershaw (1984)                           , 2022-10-18, 31:06
+
+Lines starting with # is ignored.
+
+*/
+
 
 var source = File.ReadAllLines(sourceFile);
 
@@ -108,9 +125,9 @@ var rssHead = $@"<rss xmlns:content=""http://purl.org/rss/1.0/modules/content/""
 <itunes:image href=""{imageUrl}""/>
 <itunes:owner>
 <itunes:name>{authors}</itunes:name>
-<itunes:email>anders@winsoft.se (Anders Hesselbom)</itunes:email>
+<itunes:email>{authorEmailWithName}</itunes:email>
 </itunes:owner>
-<managingEditor>anders@winsoft.se (Anders Hesselbom)</managingEditor>
+<managingEditor>{authorEmailWithName}</managingEditor>
 <copyright>{authors}</copyright>
 <itunes:subtitle>{title}</itunes:subtitle>
 <image>
@@ -119,7 +136,7 @@ var rssHead = $@"<rss xmlns:content=""http://purl.org/rss/1.0/modules/content/""
 <link>{baseUrl}</link>
 </image>
 <itunes:category text=""Music""></itunes:category>
-<googleplay:email>anders@winsoft.se</googleplay:email>
+<googleplay:email>{authorEmail}</googleplay:email>
 <googleplay:description>{tagline}</googleplay:description>
 <googleplay:explicit>No</googleplay:explicit>
 <googleplay:category text=""Music""/>
