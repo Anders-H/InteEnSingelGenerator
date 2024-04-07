@@ -3,7 +3,7 @@ using InteEnSingelGenerator;
 
 // Input, output and podcast name.
 const string sourceFile = @"C:\Users\hbom\OneDrive\InteEnSingel\source.txt";
-const string localOutput = @"C:\Users\hbom\OneDrive\InteEnSingel\Output";
+const string localOutput = @"C:\Users\hbom\OneDrive\InteEnSingel\Output"; // Note: No ending slash.
 const string title = "Inte en singel";
 const string authorEmail = "anders@winsoft.se";
 const string authorEmailWithName = $"{authorEmail} (Anders Hesselbom)";
@@ -31,19 +31,6 @@ The Riddle av Nik Kershaw (1984)                           , 2022-10-18, 31:06
 
 Lines starting with # is ignored.
 */
-];
-
-/*
-Source file format: Episode name, release date (YYYY-MM-DD), length (MM:SS)
-
-Example:
-
-Evolution av Scotch (1985)                                 , 2022-11-01, 24:54
-News of the World av Queen (1977)                          , 2022-10-25, 25:55
-The Riddle av Nik Kershaw (1984)                           , 2022-10-18, 31:06
-
-Lines starting with # is ignored.
-*/
 
 var source = File.ReadAllLines(sourceFile);
 
@@ -58,9 +45,11 @@ var episodes = (
 const string websiteHead = $@"<!DOCTYPE html>
 <html lang=""sv"" xmlns=""http://www.w3.org/1999/xhtml"">
 <head>
-<link rel=""apple-touch-icon"" sizes=""180x180"" href=""/apple-touch-icon.png""><link rel=""icon"" type=""image/png"" sizes=""32x32"" href=""/favicon-32x32.png""><link rel=""icon"" type=""image/png"" sizes=""16x16"" href=""/favicon-16x16.png""><link rel=""manifest"" href=""/site.webmanifest""> <link rel=""mask-icon"" href=""/safari-pinned-tab.svg"" color=""#5bbad5""> <meta name=""msapplication-TileColor"" content=""#da532c""> <meta name=""theme-color"" content=""#ffffff""> <meta name=""viewport"" content=""width=device-width, initial-scale=1""> <meta charset=""utf-8"" /> <title>{title} - podcast med Henrik Andersson och Anders Hesselbom</title>
+<link rel=""apple-touch-icon"" sizes=""180x180"" href=""/apple-touch-icon.png""><link rel=""icon"" type=""image/png"" sizes=""32x32"" href=""/favicon-32x32.png"">
+<link rel=""icon"" type=""image/png"" sizes=""16x16"" href=""/favicon-16x16.png""><link rel=""manifest"" href=""/site.webmanifest""> <link rel=""mask-icon"" href=""/safari-pinned-tab.svg"" color=""#5bbad5""> <meta name=""msapplication-TileColor"" content=""#da532c""> <meta name=""theme-color"" content=""#ffffff""> <meta name=""viewport"" content=""width=device-width, initial-scale=1""> <meta charset=""utf-8"" /> <title>{title} - podcast med {showHosts.SpeakLists()}</title>
 <style>
-html, body {{ border: 0; margin: 0; padding: 0; background-color: #ddd; color: #333; font-family: arial, sans-serif; }} div {{ text-align: center; margin: 0 auto 0 auto; padding: 10px 0 5px 0; width: 50%; min-width: 400px; max-width: 1000px; }} h1 {{ margin: 0; padding: 5px 0 5px 0; text-align: center; font-size: 50px; font-weight: normal; color: #111; display: none; }} .logo {{ display: block; padding: 0; margin: 0 auto 0 auto; width: 100%; height: auto; max-width: 500px; text-align: center; }} p {{ margin: 0; padding: 5px 0 5px 0; }} a {{ color: #007; text-decoration: none; }} a:hover {{ color: #11a; }} .tagline {{ padding: 5px 0 15px 0; font-style: italic; }} .headblock {{ padding: 5px 0 15px 0; font-weight: bold; }} .footblock {{ padding: 15px 0 5px 0; }}
+html, body {{ border: 0; margin: 0; padding: 0; background-color: #ddd; color: #333; font-family: arial, sans-serif; }} div {{ text-align: center; margin: 0 auto 0 auto; padding: 10px 0 5px 0; width: 50%; min-width: 400px; max-width: 1000px; }}
+h1 {{ margin: 0; padding: 5px 0 5px 0; text-align: center; font-size: 50px; font-weight: normal; color: #111; display: none; }} .logo {{ display: block; padding: 0; margin: 0 auto 0 auto; width: 100%; height: auto; max-width: 500px; text-align: center; }} p {{ margin: 0; padding: 5px 0 5px 0; }} a {{ color: #007; text-decoration: none; }} a:hover {{ color: #11a; }} .tagline {{ padding: 5px 0 15px 0; font-style: italic; }} .headblock {{ padding: 5px 0 15px 0; font-weight: bold; }} .footblock {{ padding: 15px 0 5px 0; }}
 </style>
 </head>
 <body>
@@ -73,7 +62,8 @@ const string websiteLinks = @"<div style=""border-top: 1px solid #777777; margin
     <a href=""https://ahesselbom.se/"" target=""_blank"" style=""padding-right: 30px;"">https://ahesselbom.se/</a><a href=""https://heltperfekt.com/"" target=""_blank"" style=""padding-left: 30px;"">https://heltperfekt.com/</a>
 </div>";
 
-const string websiteFoot = $@"<p class=""footblock""><!--PAGINATION--><br/><br/><b>RSS:</b> <a href=""{rss}"" target=""_blank"">{rss}</a> <br /><br /><b>YouTube:</b> <a href=""https://youtube.com/@inteensingel4131/videos"" target=""_blank"">{title}</a> <br /><br /><b>Henrik Andersson på Twitter:</b> <a href=""https://twitter.com/commoflage_"" target=""_blank"">@commoflage_</a> <br /><b>Anders Hesselbom på Twitter:</b> <a href=""https://twitter.com/ahesselbom"" target=""_blank"">@ahesselbom</a></p></div>{websiteLinks}</body></html>";
+const string websiteFoot = $@"<p class=""footblock""><!--PAGINATION--><br/><br/><b>RSS:</b> <a href=""{rss}"" target=""_blank"">{rss}</a><br /><br />
+<b>YouTube:</b> <a href=""https://youtube.com/@inteensingel4131/videos"" target=""_blank"">{title}</a> <br /><br /><b>Henrik Andersson på Twitter:</b> <a href=""https://twitter.com/commoflage_"" target=""_blank"">@commoflage_</a> <br /><b>Anders Hesselbom på Twitter:</b> <a href=""https://twitter.com/ahesselbom"" target=""_blank"">@ahesselbom</a></p></div>{websiteLinks}</body></html>";
 
 // The pagination system will have 10 episodes per page.
 var pagesCount = (int)Math.Ceiling(episodes.Count / 10.0);
@@ -136,13 +126,12 @@ for (var pageIndex = 0; pageIndex < pagesCount; pageIndex++)
 const string tagline = $"Podcasten {title} - om musiken som melodiradion glömde. {showHosts.SpeakList()} lyssnar på låtarna som aldrig blev någon singel.";
 const string authors = showHosts.CommaList();
 const string imageUrl = $"{baseUrl}inte_en_singel.jpg";
-const string rssUrl = $"{baseUrl}rss.xml";
 
 var rssHead = $@"<rss xmlns:content=""http://purl.org/rss/1.0/modules/content/"" xmlns:wfw=""http://wellformedweb.org/CommentAPI/"" xmlns:dc=""http://purl.org/dc/elements/1.1/"" xmlns:atom=""http://www.w3.org/2005/Atom"" xmlns:sy=""http://purl.org/rss/1.0/modules/syndication/"" xmlns:slash=""http://purl.org/rss/1.0/modules/slash/"" xmlns:itunes=""http://www.itunes.com/dtds/podcast-1.0.dtd"" xmlns:rawvoice=""http://www.rawvoice.com/rawvoiceRssModule/"" xmlns:googleplay=""http://www.google.com/schemas/play-podcasts/1.0""  version=""2.0"">
 <channel>
 <title>{title}</title>
 <category>Music</category>
-<atom:link href=""https://80tal.se/inte_en_singel/rss.xml"" type=""application/rss+xml""/>
+<atom:link href=""{rss}"" type=""application/rss+xml""/>
 <link>{baseUrl}</link>
 <description>{tagline}</description>
 <lastBuildDate>{DateTime.Now:r}</lastBuildDate>
@@ -174,7 +163,7 @@ var rssHead = $@"<rss xmlns:content=""http://purl.org/rss/1.0/modules/content/""
 <googleplay:image href=""{imageUrl}""/>
 <rawvoice:rating>TV-G</rawvoice:rating>
 <rawvoice:frequency>Weekly</rawvoice:frequency>
-<rawvoice:subscribe feed=""{rssUrl}"" googleplay=""{rssUrl}""/>";
+<rawvoice:subscribe feed=""{rss}"" googleplay=""{rss}""/>";
 
 const string rssFoot = "</channel></rss>";
 
@@ -186,7 +175,7 @@ var revCount = episodes.Count;
 foreach (var episode in episodes)
 {
     var url = $"{baseUrl}mp3/inteensingel{count:00}.mp3";
-    var localFile = $@"C:\Users\hbom\Dropbox\InteEnSingel\Output\mp3\inteensingel{count:00}.mp3";
+    var localFile = $@"{localOutput}\mp3\inteensingel{count:00}.mp3";
     var episodeTitle = $"Avsnitt {count:00}: {episode.Title}";
     var episodeDescription = $"I avsnitt {count} lyssnar Henrik och Anders på de låtar från {episode.Title} som aldrig släpptes på singel.";
 
@@ -202,7 +191,7 @@ foreach (var episode in episodes)
 <enclosure url=""{url}"" length=""{GetLengthInBytes(localFile)}"" type=""audio/mpeg""/>
 <itunes:subtitle>{episodeTitle}</itunes:subtitle>
 <itunes:summary>{episodeTitle}</itunes:summary>
-<itunes:author>Anders Hesselbom, Henrik Andersson</itunes:author>
+<itunes:author>{showHosts.CommaList()}</itunes:author>
 <itunes:image href=""{imageUrl}""/>
 <itunes:explicit>False</itunes:explicit>
 <itunes:duration>00:{episode.Length}</itunes:duration>
