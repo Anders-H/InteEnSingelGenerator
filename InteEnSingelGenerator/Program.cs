@@ -1,14 +1,26 @@
 ﻿using System.Text;
 using InteEnSingelGenerator;
 
+// Input, output and podcast name.
 const string sourceFile = @"C:\Users\hbom\OneDrive\InteEnSingel\source.txt";
 const string localOutput = @"C:\Users\hbom\OneDrive\InteEnSingel\Output";
 const string title = "Inte en singel";
 const string authorEmail = "anders@winsoft.se";
 const string authorEmailWithName = $"{authorEmail} (Anders Hesselbom)";
 
+// The URL used for marketing to listeners.
+const string baseUrlForVisitors = "https://inte_en_singel.80tal.se/";
+
+// The URL to the RSS when uploaded.
+const string rss = "https://80tal.se/inte_en_singel/rss.xml"; //
+
+// The URL that is covered by the SSL certificate.
+const string baseUrl = "https://www.80tal.se/inte_en_singel/";
+
+
+List<string> showHosts = ["Henrik Andersson", "Anders Hesselbom"];
+
 /*
- 
 Source file format: Episode name, release date (YYYY-MM-DD), length (MM:SS)
 
 Example:
@@ -18,9 +30,20 @@ News of the World av Queen (1977)                          , 2022-10-25, 25:55
 The Riddle av Nik Kershaw (1984)                           , 2022-10-18, 31:06
 
 Lines starting with # is ignored.
-
 */
+];
 
+/*
+Source file format: Episode name, release date (YYYY-MM-DD), length (MM:SS)
+
+Example:
+
+Evolution av Scotch (1985)                                 , 2022-11-01, 24:54
+News of the World av Queen (1977)                          , 2022-10-25, 25:55
+The Riddle av Nik Kershaw (1984)                           , 2022-10-18, 31:06
+
+Lines starting with # is ignored.
+*/
 
 var source = File.ReadAllLines(sourceFile);
 
@@ -30,7 +53,8 @@ var episodes = (
         .Select(Episode.Parse)
     ).ToList();
 
-const string rss = "https://80tal.se/inte_en_singel/rss.xml";
+
+// The HTML template.
 const string websiteHead = $@"<!DOCTYPE html>
 <html lang=""sv"" xmlns=""http://www.w3.org/1999/xhtml"">
 <head>
@@ -41,13 +65,17 @@ html, body {{ border: 0; margin: 0; padding: 0; background-color: #ddd; color: #
 </head>
 <body>
 <div>
-<h1>{title}</h1><img src=""logo.png"" alt=""{title}"" class=""logo"" /><p class=""tagline"">Podcast med Henrik Andersson och Anders Hesselbom</p><p><img src=""inteensingel.jpg"" style=""width: 100%; height: auto;""/></p><p class=""headblock"">Vi lyssnar framgångsrik musik från etablerade artister, men vi hoppar över det som släpptes på singel. Vad finns mer, förutom det som spelas på radio? Finns där poddar finns, men inte på Spotify för någon ordning vill vi ha.</p>";
+<h1>{title}</h1><img src=""logo.png"" alt=""{title}"" class=""logo"" />
+<p class=""tagline"">Podcast med {showHosts.SpeakList()}</p><p><img src=""inteensingel.jpg"" style=""width: 100%; height: auto;""/></p>
+<p class=""headblock"">Vi lyssnar framgångsrik musik från etablerade artister, men vi hoppar över det som släpptes på singel. Vad finns mer, förutom det som spelas på radio? Finns där poddar finns, men inte på Spotify för någon ordning vill vi ha.</p>";
+
 const string websiteLinks = @"<div style=""border-top: 1px solid #777777; margin-top: 30px; margin-bottom: 30px; padding-top: 30px;"">
     <a href=""https://ahesselbom.se/"" target=""_blank"" style=""padding-right: 30px;"">https://ahesselbom.se/</a><a href=""https://heltperfekt.com/"" target=""_blank"" style=""padding-left: 30px;"">https://heltperfekt.com/</a>
 </div>";
-const string websiteFoot = $@"<p class=""footblock""><!--PAGINATION--><br/><br/><b>RSS:</b> <a href=""{rss}"" target=""_blank"">{rss}</a> <br /><br /><b>YouTube:</b> <a href=""https://youtube.com/@inteensingel4131/videos"" target=""_blank"">Inte en singel</a> <br /><br /><b>Henrik Andersson på Twitter:</b> <a href=""https://twitter.com/commoflage_"" target=""_blank"">@commoflage_</a> <br /><b>Anders Hesselbom på Twitter:</b> <a href=""https://twitter.com/ahesselbom"" target=""_blank"">@ahesselbom</a></p></div>{websiteLinks}</body></html>";
 
+const string websiteFoot = $@"<p class=""footblock""><!--PAGINATION--><br/><br/><b>RSS:</b> <a href=""{rss}"" target=""_blank"">{rss}</a> <br /><br /><b>YouTube:</b> <a href=""https://youtube.com/@inteensingel4131/videos"" target=""_blank"">{title}</a> <br /><br /><b>Henrik Andersson på Twitter:</b> <a href=""https://twitter.com/commoflage_"" target=""_blank"">@commoflage_</a> <br /><b>Anders Hesselbom på Twitter:</b> <a href=""https://twitter.com/ahesselbom"" target=""_blank"">@ahesselbom</a></p></div>{websiteLinks}</body></html>";
 
+// The pagination system will have 10 episodes per page.
 var pagesCount = (int)Math.Ceiling(episodes.Count / 10.0);
 var count = episodes.Count;
 var index = 0;
@@ -60,18 +88,20 @@ var options = new FileStreamOptions
 
 for (var pageIndex = 0; pageIndex < pagesCount; pageIndex++)
 {
-    var filename = "https://inte_en_singel.80tal.se/";
+    var filename = baseUrlForVisitors;
 
     if (pageIndex > 0)
         filename = $"page{pageIndex:00}.html";
 
     using var sw = new StreamWriter(Path.Combine(localOutput, filename.StartsWith("http") ? "index.html" : filename), Encoding.UTF8, options);
     sw.Write(websiteHead);
+
+    // Each episode on a normal page.
     for (var i = 0; i < 10; i++)
     {
         var episode = episodes[index];
         Console.WriteLine($"{count:000}: {episode}");
-        sw.Write($@"<p style=""font-weight: Thin; font-size: 25px;""><a href=""https://inte_en_singel.80tal.se/mp3/inteensingel{count:00}.mp3"" target=""_blank"">{count}. ({episode.PublishedDate:yyyy-MM-dd}) {episode.Title}</a> ({episode.Length})</p>");
+        sw.Write($@"<p style=""font-weight: Thin; font-size: 25px;""><a href=""{baseUrlForVisitors}mp3/inteensingel{count:00}.mp3"" target=""_blank"">{count}. ({episode.PublishedDate:yyyy-MM-dd}) {episode.Title}</a> ({episode.Length})</p>");
         count--;
         index++;
 
@@ -89,9 +119,10 @@ for (var pageIndex = 0; pageIndex < pagesCount; pageIndex++)
     sw.Write(websiteHead);
     count = episodes.Count;
 
+    // Each episode on the "all" page.
     foreach (var episode in episodes)
     {
-        sw.Write($@"<p style=""font-weight: Thin; font-size: 21px;""><a href=""https://inte_en_singel.80tal.se/mp3/inteensingel{count:00}.mp3"" target=""_blank"">{count}. {episode.Title}</a> ({episode.Length})</p>");
+        sw.Write($@"<p style=""font-weight: Thin; font-size: 21px;""><a href=""{baseUrlForVisitors}mp3/inteensingel{count:00}.mp3"" target=""_blank"">{count}. {episode.Title}</a> ({episode.Length})</p>");
         count--;
     }
 
@@ -101,9 +132,9 @@ for (var pageIndex = 0; pageIndex < pagesCount; pageIndex++)
     Thread.Sleep(100);
 }
 
-const string tagline = $"Podcasten {title} - om musiken som melodiradion glömde. Anders Hesselbom och Henrik Andersson lyssnar på låtarna som aldrig blev någon singel.";
-const string authors = "Anders Hesselbom, Henrik Andersson";
-const string baseUrl = "https://www.80tal.se/inte_en_singel/";
+// The RSS generator.
+const string tagline = $"Podcasten {title} - om musiken som melodiradion glömde. {showHosts.SpeakList()} lyssnar på låtarna som aldrig blev någon singel.";
+const string authors = showHosts.CommaList();
 const string imageUrl = $"{baseUrl}inte_en_singel.jpg";
 const string rssUrl = $"{baseUrl}rss.xml";
 
@@ -184,12 +215,14 @@ swRss.Flush();
 swRss.Close();
 return;
 
+// Function that returns the MP3 file size in bytes.
 static int GetLengthInBytes(string localFile)
 {
     var fi = new FileInfo(localFile);
     return fi.Exists ? (int)fi.Length : 0;
 }
 
+// Function that returns the page selector.
 static string GetPagination(int pageIndex, int pageCount)
 {
     var s = new StringBuilder();
@@ -198,7 +231,7 @@ static string GetPagination(int pageIndex, int pageCount)
     {
         for (var i = 0; i < pageCount; i++)
         {
-            var filename = "https://inte_en_singel.80tal.se/";
+            var filename = baseUrlForVisitors;
 
             if (i > 0)
                 filename = $"page{i:00}.html";
@@ -212,7 +245,7 @@ static string GetPagination(int pageIndex, int pageCount)
 
     for (var i = 0; i < pageCount; i++)
     {
-        var filename = "https://inte_en_singel.80tal.se/";
+        var filename = baseUrlForVisitors;
 
         if (i > 0)
             filename = $"page{i:00}.html";
