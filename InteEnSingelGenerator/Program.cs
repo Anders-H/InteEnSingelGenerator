@@ -48,13 +48,14 @@ var websiteHead = $@"<!DOCTYPE html>
 <style>
 html, body {{ border: 0; margin: 0; padding: 0; background-color: #ddd; color: #333; font-family: arial, sans-serif; }} div {{ text-align: center; margin: 0 auto 0 auto; padding: 10px 0 5px 0; width: 50%; min-width: 400px; max-width: 1000px; }}
 h1 {{ margin: 0; padding: 5px 0 5px 0; text-align: center; font-size: 50px; font-weight: normal; color: #111; display: none; }} .logo {{ display: block; padding: 0; margin: 0 auto 0 auto; width: 100%; height: auto; max-width: 500px; text-align: center; }} p {{ margin: 0; padding: 5px 0 5px 0; }} a {{ color: #007; text-decoration: none; }} a:hover {{ color: #11a; }} .tagline {{ padding: 5px 0 15px 0; font-style: italic; }} .headblock {{ padding: 5px 0 15px 0; font-weight: bold; }} .footblock {{ padding: 15px 0 5px 0; }}
+table {{ border: none; margin: 0; padding: 0; width: 100%; }} td {{ vertical-align: top; text-align: center; margin: 2px; padding: 2px; font-weight: Thin; font-size: 20px; }}
 </style>
 </head>
 <body>
 <div>
 <h1>{title}</h1><img src=""logo.png"" alt=""{title}"" class=""logo"" />
-<p class=""tagline"">Podcast med {showHosts.SpeakList()}</p><p><img src=""inteensingel.jpg"" style=""width: 100%; height: auto;""/></p>
-<p class=""headblock"">Vi lyssnar framgångsrik musik från etablerade artister, men vi hoppar över det som släpptes på singel. Vad finns mer, förutom det som spelas på radio? Finns där poddar finns, men inte på Spotify för någon ordning vill vi ha.</p>";
+<p class=""tagline"">Podcast med {showHosts.SpeakList()}</p><p><img src=""inteensingel2.jpg"" style=""width: 100%; height: auto;""/></p>
+<p class=""headblock"">Vi lyssnar framgångsrik musik från etablerade artister, men vi hoppar över det som släpptes på singel. Vad finns mer, förutom det som spelas på radio? Här får du svaret! Finns där poddar finns, men inte på Spotify, för någon ordning vill vi ha.</p>";
 
 const string websiteLinks = @"<div style=""border-top: 1px solid #777777; margin-top: 30px; margin-bottom: 30px; padding-top: 30px;"">
     <a href=""https://ahesselbom.se/"" target=""_blank"" style=""padding-right: 30px;"">https://ahesselbom.se/</a><a href=""https://heltperfekt.com/"" target=""_blank"" style=""padding-left: 30px;"">https://heltperfekt.com/</a>
@@ -85,17 +86,33 @@ for (var pageIndex = 0; pageIndex < pagesCount; pageIndex++)
     sw.Write(websiteHead);
 
     // Each episode on a normal page.
+
+    sw.WriteLine("<table>");
+
     for (var i = 0; i < 10; i++)
     {
         var episode = episodes[index];
         Console.WriteLine($"{count:000}: {episode}");
-        sw.Write($@"<p style=""font-weight: Thin; font-size: 25px;""><a href=""{baseUrlForVisitors}mp3/inteensingel{count:00}.mp3"" target=""_blank"">{count}. ({episode.PublishedDate:yyyy-MM-dd}) {episode.Title}</a> ({episode.Length})</p>");
+        sw.Write("<tr>");
+        sw.Write($@"<td style=""white-space: nowrap;"" >{count}</td>");
+        sw.Write($@"<td style=""white-space: nowrap; font-size: smaller; padding-top: 8px;"">{episode.PublishedDate:yyyy-MM-dd}</td>");
+        sw.Write($@"<td><a href=""{baseUrlForVisitors}mp3/inteensingel{count:00}.mp3"" target=""_blank"">{episode.Title}</a></td>");
+        sw.Write($@"<td style=""white-space: nowrap; font-size: smaller; padding-top: 8px;"">{episode.Length}</td>");
+
+        if (episode.YouTube.Length > 4)
+            sw.Write($@"<td><a href=""https://www.youtube.com/watch?v={episode.YouTube}"" target=""_blank""><img src=""youtube.png"" style=""width: 24px; height: 24px;"" alt=""Spela på YouTube..."" /></a></td>");
+        else
+            sw.Write("<td></td>");
+
+        sw.Write("</tr>");
         count--;
         index++;
 
         if (count <= 0)
             break;
     }
+
+    sw.WriteLine("</table>");
     sw.Write(websiteFoot.Replace("<!--PAGINATION-->", GetPagination(pageIndex, pagesCount)));
     sw.Flush();
     sw.Close();
@@ -110,7 +127,7 @@ for (var pageIndex = 0; pageIndex < pagesCount; pageIndex++)
     // Each episode on the "all" page.
     foreach (var episode in episodes)
     {
-        sw.Write($@"<p style=""font-weight: Thin; font-size: 21px;""><a href=""{baseUrlForVisitors}mp3/inteensingel{count:00}.mp3"" target=""_blank"">{count}. {episode.Title}</a> ({episode.Length})</p>");
+        sw.Write($@"<p style=""font-weight: Thin; font-size: 18px;""><a href=""{baseUrlForVisitors}mp3/inteensingel{count:00}.mp3"" target=""_blank"">{count}. {episode.Title}</a> ({episode.Length})</p>");
         count--;
     }
 

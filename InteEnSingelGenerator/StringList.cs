@@ -13,24 +13,22 @@ public class StringList : List<string>
             case 2:
                 return $"{this[0]} och {this[1]}";
             default:
-                if (Count > 0)
+                if (Count <= 0)
+                    return "";
+
+                var s = new StringBuilder();
+
+                for (var i = 0; i < Count; i++)
                 {
-                    var s = new StringBuilder();
-
-                    for (var i = 0; i < Count; i++)
-                    {
-                        if (i == 0)
-                            s.Append(this[i]);
-                        else if (i > 0 && i < Count - 1)
-                            s.Append($", {this[i]}");
-                        else
-                            s.Append($" och {this[i]}");
-                    }
-
-                    return s.ToString();
+                    if (i == 0)
+                        s.Append(this[i]);
+                    else if (i > 0 && i < Count - 1)
+                        s.Append($", {this[i]}");
+                    else
+                        s.Append($" och {this[i]}");
                 }
 
-                return "";
+                return s.ToString();
         }
     }
 
