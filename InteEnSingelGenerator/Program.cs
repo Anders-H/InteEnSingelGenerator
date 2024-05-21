@@ -142,14 +142,14 @@ var tagline = $"Podcasten {title} - om musiken som melodiradion glömde. {showHo
 var authors = showHosts.CommaList();
 const string imageUrl = $"{baseUrl}inte_en_singel.jpg";
 
-var rssHead = $@"<rss xmlns:content=""http://purl.org/rss/1.0/modules/content/"" xmlns:wfw=""http://wellformedweb.org/CommentAPI/"" xmlns:dc=""http://purl.org/dc/elements/1.1/"" xmlns:atom=""http://www.w3.org/2005/Atom"" xmlns:sy=""http://purl.org/rss/1.0/modules/syndication/"" xmlns:slash=""http://purl.org/rss/1.0/modules/slash/"" xmlns:itunes=""http://www.itunes.com/dtds/podcast-1.0.dtd"" xmlns:rawvoice=""http://www.rawvoice.com/rawvoiceRssModule/"" xmlns:googleplay=""http://www.google.com/schemas/play-podcasts/1.0""  version=""2.0"">
+var rssHead = $@"<rss xmlns:content=""http://purl.org/rss/1.0/modules/content/"" xmlns:wfw=""http://wellformedweb.org/CommentAPI/"" xmlns:dc=""http://purl.org/dc/elements/1.1/"" xmlns:atom=""http://www.w3.org/2005/Atom"" xmlns:sy=""http://purl.org/rss/1.0/modules/syndication/"" xmlns:slash=""http://purl.org/rss/1.0/modules/slash/"" xmlns:itunes=""http://www.itunes.com/dtds/podcast-1.0.dtd"" xmlns:rawvoice=""http://www.rawvoice.com/rawvoiceRssModule/""  version=""2.0"">
 <channel>
 <title>{title}</title>
 <category>Music</category>
-<atom:link href=""{rss}"" type=""application/rss+xml""/>
+<atom:link href=""{rss}"" rel=""self"" type=""application/rss+xml""/>
 <link>{baseUrl}</link>
 <description>{tagline}</description>
-<lastBuildDate>{DateTime.Now:r}</lastBuildDate>
+<lastBuildDate>{DateTime.Now.AddHours(-2):r}</lastBuildDate>
 <language>sv-SE</language>
 <sy:updatePeriod>weekly</sy:updatePeriod>
 <sy:updateFrequency>1</sy:updateFrequency>
@@ -159,23 +159,18 @@ var rssHead = $@"<rss xmlns:content=""http://purl.org/rss/1.0/modules/content/""
 <itunes:explicit>False</itunes:explicit>
 <itunes:image href=""{imageUrl}""/>
 <itunes:owner>
-<itunes:name>{authors}</itunes:name>
-<itunes:email>{authorEmailWithName}</itunes:email>
+    <itunes:name>{authors}</itunes:name>
+    <itunes:email>{authorEmailWithName}</itunes:email>
 </itunes:owner>
 <managingEditor>{authorEmailWithName}</managingEditor>
 <copyright>{authors}</copyright>
 <itunes:subtitle>{title}</itunes:subtitle>
 <image>
-<title>{title}</title>
-<url>{imageUrl}</url>
-<link>{baseUrl}</link>
+    <title>{title}</title>
+    <url>{imageUrl}</url>
+    <link>{baseUrl}</link>
 </image>
 <itunes:category text=""Music""></itunes:category>
-<googleplay:email>{authorEmail}</googleplay:email>
-<googleplay:description>{tagline}</googleplay:description>
-<googleplay:explicit>No</googleplay:explicit>
-<googleplay:category text=""Music""/>
-<googleplay:image href=""{imageUrl}""/>
 <rawvoice:rating>TV-G</rawvoice:rating>
 <rawvoice:frequency>Weekly</rawvoice:frequency>
 <rawvoice:subscribe feed=""{rss}"" googleplay=""{rss}""/>";
@@ -210,6 +205,7 @@ foreach (var episode in episodes)
 <itunes:image href=""{imageUrl}""/>
 <itunes:explicit>False</itunes:explicit>
 <itunes:duration>00:{episode.Length}</itunes:duration>
+<YouTubeId>{episode.YouTube}</YouTubeId>
 </item>");
     count--;
 }
