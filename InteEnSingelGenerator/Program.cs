@@ -44,7 +44,11 @@ var websiteHead = $@"<!DOCTYPE html>
 <html lang=""sv"" xmlns=""http://www.w3.org/1999/xhtml"">
 <head>
 <link rel=""apple-touch-icon"" sizes=""180x180"" href=""/apple-touch-icon.png""><link rel=""icon"" type=""image/png"" sizes=""32x32"" href=""/favicon-32x32.png"">
-<link rel=""icon"" type=""image/png"" sizes=""16x16"" href=""/favicon-16x16.png""><link rel=""manifest"" href=""/site.webmanifest""> <link rel=""mask-icon"" href=""/safari-pinned-tab.svg"" color=""#5bbad5""> <meta name=""msapplication-TileColor"" content=""#da532c""> <meta name=""theme-color"" content=""#ffffff""> <meta name=""viewport"" content=""width=device-width, initial-scale=1""> <meta charset=""utf-8"" /> <title>{title} - podcast med {showHosts.SpeakList()}</title>
+<link rel=""icon"" type=""image/png"" sizes=""16x16"" href=""/favicon-16x16.png""><link rel=""manifest"" href=""/site.webmanifest"">
+<link rel=""mask-icon"" href=""/safari-pinned-tab.svg"" color=""#5bbad5""> <meta name=""msapplication-TileColor"" content=""#da532c"">
+<meta name=""theme-color"" content=""#ffffff""> <meta name=""viewport"" content=""width=device-width, initial-scale=1"">
+<meta charset=""utf-8"" />
+<title>{title} - podcast med {showHosts.SpeakList()}</title>
 <style>
 html, body {{ border: 0; margin: 0; padding: 0; background-color: #ddd; color: #333; font-family: arial, sans-serif; }} div {{ text-align: center; margin: 0 auto 0 auto; padding: 10px 0 5px 0; width: 50%; min-width: 400px; max-width: 1000px; }}
 h1 {{ margin: 0; padding: 5px 0 5px 0; text-align: center; font-size: 50px; font-weight: normal; color: #111; display: none; }} .logo {{ display: block; padding: 0; margin: 0 auto 0 auto; width: 100%; height: auto; max-width: 500px; text-align: center; }} p {{ margin: 0; padding: 5px 0 5px 0; }} a {{ color: #007; text-decoration: none; }} a:hover {{ color: #11a; }} .tagline {{ padding: 5px 0 15px 0; font-style: italic; }} .headblock {{ padding: 5px 0 15px 0; font-weight: bold; }} .footblock {{ padding: 15px 0 5px 0; }}
@@ -57,11 +61,36 @@ table {{ border: none; margin: 0; padding: 0; width: 100%; }} td {{ vertical-ali
 <p class=""tagline"">Podcast med {showHosts.SpeakList()}</p><p><img src=""inteensingel2.jpg"" style=""width: 100%; height: auto;""/></p>
 <p class=""headblock"">Vi lyssnar framgångsrik musik från etablerade artister, men vi hoppar över det som släpptes på singel. Vad finns mer, förutom det som spelas på radio? Här får du svaret! Finns där poddar finns, men inte på Spotify, för någon ordning vill vi ha.</p>";
 
+var episodeSiteHead = $@"<!DOCTYPE html>
+<html lang=""sv"" xmlns=""http://www.w3.org/1999/xhtml"">
+<head>
+<link rel=""apple-touch-icon"" sizes=""180x180"" href=""../apple-touch-icon.png""><link rel=""icon"" type=""image/png"" sizes=""32x32"" href=""../favicon-32x32.png"">
+<link rel=""icon"" type=""image/png"" sizes=""16x16"" href=""../favicon-16x16.png""><link rel=""manifest"" href=""../site.webmanifest""> <link rel=""mask-icon"" href=""../safari-pinned-tab.svg"" color=""#5bbad5"">
+<meta name=""msapplication-TileColor"" content=""#da532c"">
+<meta name=""theme-color"" content=""#ffffff"">
+<meta name=""viewport"" content=""width=device-width, initial-scale=1"">
+<meta charset=""utf-8"" /> <title><!--EPISODE_TITLE--> - {title} - podcast med {showHosts.SpeakList()}</title>
+<style>
+html, body {{ border: 0; margin: 0; padding: 0; background-color: #ddd; color: #333; font-family: arial, sans-serif; }} div {{ text-align: center; margin: 0 auto 0 auto; padding: 10px 0 5px 0; width: 50%; min-width: 400px; max-width: 1000px; }}
+h1 {{ margin: 0; padding: 5px 0 5px 0; text-align: center; font-size: 50px; font-weight: normal; color: #111; display: none; }} .logo {{ display: block; padding: 0; margin: 0 auto 0 auto; width: 100%; height: auto; max-width: 500px; text-align: center; }} p {{ margin: 0; padding: 5px 0 5px 0; }} a {{ color: #007; text-decoration: none; }} a:hover {{ color: #11a; }} .tagline {{ padding: 5px 0 15px 0; font-style: italic; }} .headblock {{ padding: 5px 0 15px 0; font-weight: bold; }} .footblock {{ padding: 15px 0 5px 0; }}
+table {{ border: none; margin: 0; padding: 0; width: 100%; }} td {{ vertical-align: top; text-align: center; margin: 2px; padding: 2px; font-weight: Thin; font-size: 20px; }}
+</style>
+</head>
+<body>
+<div>
+<h1>{title}</h1><img src=""../logo.png"" alt=""{title}"" class=""logo"" />
+<p class=""tagline"">Podcast med {showHosts.SpeakList()}</p><p><img src=""../inteensingel2.jpg"" style=""width: 100%; height: auto;""/></p>
+<p class=""headblock"">I avsnitt <!--COUNT--> av podcasten med musik som melodiradion glömde lyssnar Henrik och Anders på de låtar från <!--EPISODE_TITLE--> som aldrig släpptes på singel</p>";
+
+
 const string websiteLinks = @"<div style=""border-top: 1px solid #777777; margin-top: 30px; margin-bottom: 30px; padding-top: 30px;"">
     <a href=""https://ahesselbom.se/"" target=""_blank"" style=""padding-right: 30px;"">https://ahesselbom.se/</a><a href=""https://heltperfekt.com/"" target=""_blank"" style=""padding-left: 30px;"">https://heltperfekt.com/</a>
 </div>";
 
-const string websiteFoot = $@"<p class=""footblock""><!--PAGINATION--><br/><br/><b>RSS:</b> <a href=""{rss}"" target=""_blank"">{rss}</a><br /><br />
+const string websiteFootWithPagination = $@"<p class=""footblock""><!--PAGINATION--><br/><br/><b>RSS:</b> <a href=""{rss}"" target=""_blank"">{rss}</a><br /><br />
+<b>YouTube:</b> <a href=""https://youtube.com/@inteensingel4131/videos"" target=""_blank"">{title}</a> <br /><br /><b>Henrik Andersson på Twitter:</b> <a href=""https://twitter.com/commoflage_"" target=""_blank"">@commoflage_</a> <br /><b>Anders Hesselbom på Twitter:</b> <a href=""https://twitter.com/ahesselbom"" target=""_blank"">@ahesselbom</a></p></div>{websiteLinks}</body></html>";
+
+const string websiteFootWithoutPagination = $@"<p class=""footblock""><b><a href=""https://inte_en_singel.80tal.se/"">Tillbaka till startsidan</a></b><br /><br /><b>RSS:</b> <a href=""{rss}"" target=""_blank"">{rss}</a><br /><br />
 <b>YouTube:</b> <a href=""https://youtube.com/@inteensingel4131/videos"" target=""_blank"">{title}</a> <br /><br /><b>Henrik Andersson på Twitter:</b> <a href=""https://twitter.com/commoflage_"" target=""_blank"">@commoflage_</a> <br /><b>Anders Hesselbom på Twitter:</b> <a href=""https://twitter.com/ahesselbom"" target=""_blank"">@ahesselbom</a></p></div>{websiteLinks}</body></html>";
 
 // The pagination system will have 10 episodes per page.
@@ -96,8 +125,9 @@ for (var pageIndex = 0; pageIndex < pagesCount; pageIndex++)
         sw.Write("<tr>");
         sw.Write($@"<td style=""white-space: nowrap;"" >{count}</td>");
         sw.Write($@"<td style=""white-space: nowrap; font-size: smaller; padding-top: 8px;"">{episode.PublishedDate:yyyy-MM-dd}</td>");
-        sw.Write($@"<td><a href=""{baseUrlForVisitors}mp3/inteensingel{count:00}.mp3"" target=""_blank"">{episode.Title}</a></td>");
+        sw.Write($@"<td><a href=""ep/{count:00}.html"" target=""_blank"">{episode.Title}</a></td>");
         sw.Write($@"<td style=""white-space: nowrap; font-size: smaller; padding-top: 8px;"">{episode.Length}</td>");
+        sw.Write($@"<td><a href=""{baseUrlForVisitors}mp3/inteensingel{count:00}.mp3""><img src=""mp3.png"" style=""width: 24px; height: 24px;"" alt=""Lyssna direkt..."" /></a></td>");
 
         if (episode.YouTube.Length > 4)
             sw.Write($@"<td><a href=""https://www.youtube.com/watch?v={episode.YouTube}"" target=""_blank""><img src=""youtube.png"" style=""width: 24px; height: 24px;"" alt=""Spela på YouTube..."" /></a></td>");
@@ -113,7 +143,7 @@ for (var pageIndex = 0; pageIndex < pagesCount; pageIndex++)
     }
 
     sw.WriteLine("</table>");
-    sw.Write(websiteFoot.Replace("<!--PAGINATION-->", GetPagination(pageIndex, pagesCount)));
+    sw.Write(websiteFootWithPagination.Replace("<!--PAGINATION-->", GetPagination(pageIndex, pagesCount)));
     sw.Flush();
     sw.Close();
     Thread.Sleep(100);
@@ -131,10 +161,37 @@ for (var pageIndex = 0; pageIndex < pagesCount; pageIndex++)
         count--;
     }
 
-    sw.Write(websiteFoot.Replace("<!--PAGINATION-->", GetPagination(-1, pagesCount)));
+    sw.Write(websiteFootWithPagination.Replace("<!--PAGINATION-->", GetPagination(-1, pagesCount)));
     sw.Flush();
     sw.Close();
     Thread.Sleep(100);
+}
+
+{
+    count = episodes.Count;
+
+    // Each episode page
+    foreach (var episode in episodes)
+    {
+        using var sw = new StreamWriter(Path.Combine(localOutput, $"ep\\{count:00}.html"), Encoding.UTF8, options);
+        sw.Write(episodeSiteHead.Replace("<!--EPISODE_TITLE-->", episode.Title).Replace("<!--COUNT-->", count.ToString()));
+        sw.Write(@"<table style=""width: 100%"">");
+        sw.Write(@"<tr><td colspan=""2"" style=""text-align: center;"">");
+        sw.Write($@"<audio controls autoplay><source src=""../mp3/inteensingel{count:00}.mp3"" type=""audio/mpeg""></audio>");
+        sw.Write("</td></tr>");
+
+        if (string.IsNullOrWhiteSpace(episode.YouTube))
+            sw.Write($@"<tr><td colspan=""2"" style=""text-align: center;""><a href=""{baseUrlForVisitors}mp3/inteensingel{count:00}.mp3"" target=""_blank""><img src=""mp3.png"" style=""width: 24px; height: 24px;"" alt=""Lyssna direkt..."" /></a></td>");
+        else
+            sw.Write($@"<tr><td style=""text-align: center;""><a href=""{baseUrlForVisitors}mp3/inteensingel{count:00}.mp3"" target=""_blank""><img src=""../mp3.png"" style=""width: 24px; height: 24px;"" alt=""Lyssna direkt..."" /></a></td><td style=""text-align: center;""><a href=""https://www.youtube.com/watch?v={episode.YouTube}"" target=""_blank""><img src=""../youtube.png"" style=""width: 24px; height: 24px;"" alt=""Spela på YouTube..."" /></a></td></tr>");
+
+        sw.Write("</table>");
+        sw.Write(websiteFootWithoutPagination);
+        sw.Flush();
+        sw.Close();
+        Thread.Sleep(100);
+        count--;
+    }
 }
 
 // The RSS generator.
