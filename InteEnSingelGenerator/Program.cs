@@ -19,18 +19,6 @@ const string baseUrl = "https://www.80tal.se/inte_en_singel/";
 
 StringList showHosts = ["Henrik Andersson", "Anders Hesselbom"];
 
-/*
-Source file format: Episode name, release date (YYYY-MM-DD), length (MM:SS)
-
-Example:
-
-Evolution av Scotch (1985)                                 , 2022-11-01, 24:54
-News of the World av Queen (1977)                          , 2022-10-25, 25:55
-The Riddle av Nik Kershaw (1984)                           , 2022-10-18, 31:06
-
-Lines starting with # is ignored.
-*/
-
 var source = File.ReadAllLines(sourceFile);
 
 var episodes = (
@@ -125,7 +113,7 @@ for (var pageIndex = 0; pageIndex < pagesCount; pageIndex++)
         sw.Write("<tr>");
         sw.Write($@"<td style=""white-space: nowrap;"" >{count}</td>");
         sw.Write($@"<td style=""white-space: nowrap; font-size: smaller; padding-top: 8px;"">{episode.PublishedDate:yyyy-MM-dd}</td>");
-        sw.Write($@"<td><a href=""ep/{count:00}.html"" target=""_blank"">{episode.Title}</a></td>");
+        sw.Write($@"<td><a href=""ep/{count:00}.html"">{episode.Title}</a></td>");
         sw.Write($@"<td style=""white-space: nowrap; font-size: smaller; padding-top: 8px;"">{episode.Length}</td>");
         sw.Write($@"<td><a href=""{baseUrlForVisitors}mp3/inteensingel{count:00}.mp3""><img src=""mp3.png"" style=""width: 24px; height: 24px;"" alt=""Lyssna direkt..."" /></a></td>");
 
