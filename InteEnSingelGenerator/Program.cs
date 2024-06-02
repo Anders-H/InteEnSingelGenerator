@@ -145,7 +145,7 @@ for (var pageIndex = 0; pageIndex < pagesCount; pageIndex++)
     // Each episode on the "all" page.
     foreach (var episode in episodes)
     {
-        sw.Write($@"<p style=""font-weight: Thin; font-size: 18px;""><a href=""{baseUrlForVisitors}mp3/inteensingel{count:00}.mp3"" target=""_blank"">{count}. {episode.Title}</a> ({episode.Length})</p>");
+        sw.Write($@"<p style=""font-weight: Thin; font-size: 18px;""><a href=""{baseUrlForVisitors}ep/{count:00}.html"">{count}. {episode.Title}</a> ({episode.Length})</p>");
         count--;
     }
 
