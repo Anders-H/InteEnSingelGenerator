@@ -27,7 +27,7 @@ var episodes = (
         .Select(Episode.Parse)
     ).ToList();
 
-// The HTML template.
+// The HTML template for the landing site.
 var websiteHead = $@"<!DOCTYPE html>
 <html lang=""sv"" xmlns=""http://www.w3.org/1999/xhtml"">
 <head>
@@ -49,6 +49,7 @@ table {{ border: none; margin: 0; padding: 0; width: 100%; }} td {{ vertical-ali
 <p class=""tagline"">Podcast med {showHosts.SpeakList()}</p><p><img src=""inteensingel2.jpg"" style=""width: 100%; height: auto;""/></p>
 <p class=""headblock"">Vi lyssnar framgångsrik musik från etablerade artister, men vi hoppar över det som släpptes på singel. Vad finns mer, förutom det som spelas på radio? Här får du svaret! Finns där poddar finns, men inte på Spotify, för någon ordning vill vi ha.</p>";
 
+// HTML template for the episode.
 var episodeSiteHead = $@"<!DOCTYPE html>
 <html lang=""sv"" xmlns=""http://www.w3.org/1999/xhtml"">
 <head>
@@ -102,8 +103,8 @@ for (var pageIndex = 0; pageIndex < pagesCount; pageIndex++)
     using var sw = new StreamWriter(Path.Combine(localOutput, filename.StartsWith("http") ? "index.html" : filename), Encoding.UTF8, options);
     sw.Write(websiteHead.Replace("[LOGO-SIZE]", index == 0 ? "100%" : "90%"));
 
-    // Each episode on a normal page.
-
+    // Each episode on a normal list page (10 episodes);
+    
     sw.WriteLine("<table>");
 
     for (var i = 0; i < 10; i++)
@@ -113,6 +114,16 @@ for (var pageIndex = 0; pageIndex < pagesCount; pageIndex++)
         sw.Write("<tr>");
         sw.Write($@"<td style=""white-space: nowrap;"" >{count}</td>");
         sw.Write($@"<td style=""white-space: nowrap; font-size: smaller; padding-top: 8px;"">{episode.PublishedDate:yyyy-MM-dd}</td>");
+        var imageThumbFilename = Path.Combine(localOutput, $"ep\\{count:00}_.jpg");
+        var imageFilename = Path.Combine(localOutput, $"ep\\{count:00}.jpg");
+        
+        if (File.Exists(imageThumbFilename))
+            sw.Write($@"<td><a href=""ep/{count:00}.html""><img src=""ep/{count:00}_.jpg"" style=""width: 24px; height: 24px;"" alt=""{episode.Title}"" /></a></td>");
+        else if (File.Exists(imageFilename))
+            sw.Write($@"<td><a href=""ep/{count:00}.html""><img src=""ep/{count:00}.jpg"" style=""width: 24px; height: 24px;"" alt=""{episode.Title}"" /></a></td>");
+        else
+            sw.Write("<td></td>");
+
         sw.Write($@"<td><a href=""ep/{count:00}.html"">{episode.Title}</a></td>");
         sw.Write($@"<td style=""white-space: nowrap; font-size: smaller; padding-top: 8px;"">{episode.Length}</td>");
         sw.Write($@"<td><a href=""{baseUrlForVisitors}mp3/inteensingel{count:00}.mp3""><img src=""mp3.png"" style=""width: 24px; height: 24px;"" alt=""Lyssna direkt..."" /></a></td>");
@@ -173,7 +184,7 @@ for (var pageIndex = 0; pageIndex < pagesCount; pageIndex++)
         sw.Write(episodeSiteHead.Replace("<!--EPISODE_TITLE-->", episode.Title).Replace("<!--COUNT-->", count.ToString()).Replace("./cover.jpg", imageFilename));
         sw.Write(@"<table style=""width: 100%"">");
         sw.Write(@"<tr><td colspan=""2"" style=""text-align: center;"">");
-        sw.Write($@"<audio controls><source src=""../mp3/inteensingel{count:00}.mp3"" type=""audio/mpeg""></audio>");
+        sw.Write($@"<audio controls style=""width: 100%;""><source src=""../mp3/inteensingel{count:00}.mp3"" type=""audio/mpeg""></audio>");
         sw.Write("</td></tr>");
 
         if (string.IsNullOrWhiteSpace(episode.YouTube))
