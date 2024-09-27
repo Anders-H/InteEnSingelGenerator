@@ -7,6 +7,9 @@ const string localOutput = @"C:\Users\hbom\OneDrive\InteEnSingel\Output"; // Not
 const string title = "Inte en singel";
 const string authorEmail = "anders@winsoft.se";
 const string authorEmailWithName = $"{authorEmail} (Anders Hesselbom)";
+const string mp3Filename = "inteensingel";
+const string podcastCategory = "Music";
+const string youTubeChannel = "https://youtube.com/@inteensingel4131/videos";
 
 // The URL used for marketing to listeners.
 const string baseUrlForVisitors = "https://inte_en_singel.80tal.se/";
@@ -38,15 +41,21 @@ var websiteHead = $@"<!DOCTYPE html>
 <meta charset=""utf-8"" />
 <title>{title} - podcast med {showHosts.SpeakList()}</title>
 <style>
-html, body {{ border: 0; margin: 0; padding: 0; background-color: #ddd; color: #333; font-family: arial, sans-serif; }} div {{ text-align: center; margin: 0 auto 0 auto; padding: 10px 0 5px 0; width: 50%; min-width: 400px; max-width: 1000px; }}
-h1 {{ margin: 0; padding: 5px 0 5px 0; text-align: center; font-size: 50px; font-weight: normal; color: #111; display: none; }} .logo {{ display: block; padding: 0; margin: 0 auto 0 auto; width: [LOGO-SIZE]; height: auto; max-width: 500px; text-align: center; }} p {{ margin: 0; padding: 5px 0 5px 0; }} a {{ color: #007; text-decoration: none; }} a:hover {{ color: #11a; }} .tagline {{ padding: 5px 0 15px 0; font-style: italic; }} .headblock {{ padding: 5px 0 15px 0; font-weight: bold; }} .footblock {{ padding: 15px 0 5px 0; }}
-table {{ border: none; margin: 0; padding: 0; width: 100%; }} td {{ vertical-align: top; text-align: center; margin: 2px; padding: 2px; font-weight: Thin; font-size: 20px; }}
+html, body {{ border: 0; margin: 0; padding: 0; background-color: #ddd; color: #333; font-family: arial, sans-serif; }}
+div {{ text-align: center; margin: 0 auto 0 auto; padding: 10px 0 5px 0; width: 50%; min-width: 400px; max-width: 1000px; }}
+h1 {{ margin: 0; padding: 5px 0 5px 0; text-align: center; font-size: 50px; font-weight: normal; color: #111; display: none; }}
+.logo {{ display: block; padding: 0; margin: 0 auto 0 auto; width: [LOGO-SIZE]; height: auto; max-width: 500px; text-align: center; }}
+p {{ margin: 0; padding: 5px 0 5px 0; }} a {{ color: #007; text-decoration: none; }} a:hover {{ color: #11a; }}
+.tagline {{ padding: 5px 0 15px 0; font-style: italic; }} .headblock {{ padding: 5px 0 15px 0; font-weight: bold; }}
+.footblock {{ padding: 15px 0 5px 0; }}
+table {{ border: none; margin: 0; padding: 0; width: 100%; }}
+td {{ vertical-align: top; text-align: center; margin: 2px; padding: 2px; font-weight: Thin; font-size: 20px; }}
 </style>
 </head>
 <body>
 <div>
 <h1>{title}</h1><img src=""logo.png"" alt=""{title}"" class=""logo"" />
-<p class=""tagline"">Podcast med {showHosts.SpeakList()}</p><p><img src=""inteensingel2.jpg"" style=""width: 100%; height: auto;""/></p>
+<p class=""tagline"">Podcast med {showHosts.SpeakList()}</p><p><img src=""inteensingel2.jpg"" alt=""{title}"" style=""width: 100%; height: auto;""/></p>
 <p class=""headblock"">Vi lyssnar framgångsrik musik från etablerade artister, men vi hoppar över det som släpptes på singel. Vad finns mer, förutom det som spelas på radio? Här får du svaret! Finns där poddar finns, men inte på Spotify, för någon ordning vill vi ha.</p>";
 
 // HTML template for the episode.
@@ -76,11 +85,19 @@ const string websiteLinks = @"<div style=""border-top: 1px solid #777777; margin
     <a href=""https://ahesselbom.se/"" target=""_blank"" style=""padding-right: 30px;"">https://ahesselbom.se/</a><a href=""https://heltperfekt.com/"" target=""_blank"" style=""padding-left: 30px;"">https://heltperfekt.com/</a>
 </div>";
 
-const string websiteFootWithPagination = $@"<p class=""footblock""><!--PAGINATION--><br/><br/><b>RSS:</b> <a href=""{rss}"" target=""_blank"">{rss}</a><br /><br />
-<b>YouTube:</b> <a href=""https://youtube.com/@inteensingel4131/videos"" target=""_blank"">{title}</a> <br /><br /><b>Henrik Andersson på Twitter:</b> <a href=""https://twitter.com/commoflage_"" target=""_blank"">@commoflage_</a> <br /><b>Anders Hesselbom på Twitter:</b> <a href=""https://twitter.com/ahesselbom"" target=""_blank"">@ahesselbom</a></p></div>{websiteLinks}</body></html>";
+const string youTubeLink = $@"<b>YouTube:</b> <a href=""{youTubeChannel}"" target=""_blank"">{title}</a><br /><br />";
 
-const string websiteFootWithoutPagination = $@"<p class=""footblock""><b><a href=""https://inte_en_singel.80tal.se/"">Tillbaka till startsidan</a></b><br /><br /><b>RSS:</b> <a href=""{rss}"" target=""_blank"">{rss}</a><br /><br />
-<b>YouTube:</b> <a href=""https://youtube.com/@inteensingel4131/videos"" target=""_blank"">{title}</a> <br /><br /><b>Henrik Andersson på Twitter:</b> <a href=""https://twitter.com/commoflage_"" target=""_blank"">@commoflage_</a> <br /><b>Anders Hesselbom på Twitter:</b> <a href=""https://twitter.com/ahesselbom"" target=""_blank"">@ahesselbom</a></p></div>{websiteLinks}</body></html>";
+var websiteFootWithPagination = $@"<p class=""footblock""><!--PAGINATION--><br/><br/><b>RSS:</b> <a href=""{rss}"" target=""_blank"">{rss}</a><br /><br />
+{(string.IsNullOrWhiteSpace(youTubeChannel) ? "" : youTubeLink)}
+Bjud på en kopp kaffe (20:-) som tack för bra innehåll!<br /><br /><img src=""https://ahesselbom.se/img/swish.png"" style=""width: 30%; height: auto; min-width: 100px; max-width: 300px;""><br /><br />
+<b>Henrik Andersson på X (Twitter):</b> <a href=""https://twitter.com/commoflage_"" target=""_blank"">@commoflage_</a><br />
+<b>Anders Hesselbom på X (Twitter):</b> <a href=""https://twitter.com/ahesselbom"" target=""_blank"">@ahesselbom</a></p></div>{websiteLinks}</body></html>";
+
+var websiteFootWithoutPagination = $@"<p class=""footblock""><b><a href=""https://inte_en_singel.80tal.se/"">Tillbaka till startsidan</a></b><br /><br /><b>RSS:</b> <a href=""{rss}"" target=""_blank"">{rss}</a><br /><br />
+{(string.IsNullOrWhiteSpace(youTubeChannel) ? "" : youTubeLink)}
+Bjud på en kopp kaffe (20:-) som tack för bra innehåll!<br /><br /><img src=""https://ahesselbom.se/img/swish.png"" style=""width: 30%; height: auto; min-width: 100px; max-width: 300px;""><br /><br />
+<b>Henrik Andersson på X (Twitter):</b> <a href=""https://twitter.com/commoflage_"" target=""_blank"">@commoflage_</a><br />
+<b>Anders Hesselbom på X (Twitter):</b> <a href=""https://twitter.com/ahesselbom"" target=""_blank"">@ahesselbom</a></p></div>{websiteLinks}</body></html>";
 
 // The pagination system will have 10 episodes per page.
 var pagesCount = (int)Math.Ceiling(episodes.Count / 10.0);
@@ -126,7 +143,7 @@ for (var pageIndex = 0; pageIndex < pagesCount; pageIndex++)
 
         sw.Write($@"<td><a href=""ep/{count:00}.html"">{episode.Title}</a></td>");
         sw.Write($@"<td style=""white-space: nowrap; font-size: smaller; padding-top: 8px;"">{episode.Length}</td>");
-        sw.Write($@"<td><a href=""{baseUrlForVisitors}mp3/inteensingel{count:00}.mp3""><img src=""mp3.png"" style=""width: 24px; height: 24px;"" alt=""Lyssna direkt..."" /></a></td>");
+        sw.Write($@"<td><a href=""{baseUrlForVisitors}mp3/{mp3Filename}{count:00}.mp3""><img src=""mp3.png"" style=""width: 24px; height: 24px;"" alt=""Lyssna direkt..."" /></a></td>");
 
         if (episode.YouTube.Length > 4)
             sw.Write($@"<td><a href=""https://www.youtube.com/watch?v={episode.YouTube}"" target=""_blank""><img src=""youtube.png"" style=""width: 24px; height: 24px;"" alt=""Spela på YouTube..."" /></a></td>");
@@ -184,13 +201,12 @@ for (var pageIndex = 0; pageIndex < pagesCount; pageIndex++)
         sw.Write(episodeSiteHead.Replace("<!--EPISODE_TITLE-->", episode.Title).Replace("<!--COUNT-->", count.ToString()).Replace("./cover.jpg", imageFilename));
         sw.Write(@"<table style=""width: 100%"">");
         sw.Write(@"<tr><td colspan=""2"" style=""text-align: center;"">");
-        sw.Write($@"<audio controls style=""width: 100%;""><source src=""../mp3/inteensingel{count:00}.mp3"" type=""audio/mpeg""></audio>");
+        sw.Write($@"<audio controls style=""width: 100%;""><source src=""../mp3/{mp3Filename}{count:00}.mp3"" type=""audio/mpeg""></audio>");
         sw.Write("</td></tr>");
 
-        if (string.IsNullOrWhiteSpace(episode.YouTube))
-            sw.Write($@"<tr><td colspan=""2"" style=""text-align: center;""><a href=""{baseUrlForVisitors}mp3/inteensingel{count:00}.mp3"" target=""_blank""><img src=""../mp3.png"" style=""width: 24px; height: 24px;"" alt=""Lyssna direkt..."" /></a></td>");
-        else
-            sw.Write($@"<tr><td style=""text-align: center;""><a href=""{baseUrlForVisitors}mp3/inteensingel{count:00}.mp3"" target=""_blank""><img src=""../mp3.png"" style=""width: 24px; height: 24px;"" alt=""Lyssna direkt..."" /></a></td><td style=""text-align: center;""><a href=""https://www.youtube.com/watch?v={episode.YouTube}"" target=""_blank""><img src=""../youtube.png"" style=""width: 24px; height: 24px;"" alt=""Spela på YouTube..."" /></a></td></tr>");
+        sw.Write(string.IsNullOrWhiteSpace(episode.YouTube)
+            ? $@"<tr><td colspan=""2"" style=""text-align: center;""><a href=""{baseUrlForVisitors}mp3/{mp3Filename}{count:00}.mp3"" target=""_blank""><img src=""../mp3.png"" style=""width: 24px; height: 24px;"" alt=""Lyssna direkt..."" /></a></td>"
+            : $@"<tr><td style=""text-align: center;""><a href=""{baseUrlForVisitors}mp3/{mp3Filename}{count:00}.mp3"" target=""_blank""><img src=""../mp3.png"" style=""width: 24px; height: 24px;"" alt=""Lyssna direkt..."" /></a></td><td style=""text-align: center;""><a href=""https://www.youtube.com/watch?v={episode.YouTube}"" target=""_blank""><img src=""../youtube.png"" style=""width: 24px; height: 24px;"" alt=""Spela på YouTube..."" /></a></td></tr>");
 
         sw.Write("</table>");
         sw.Write(websiteFootWithoutPagination);
@@ -209,7 +225,7 @@ const string imageUrl = $"{baseUrl}inte_en_singel.jpg";
 var rssHead = $@"<rss xmlns:content=""http://purl.org/rss/1.0/modules/content/"" xmlns:wfw=""http://wellformedweb.org/CommentAPI/"" xmlns:dc=""http://purl.org/dc/elements/1.1/"" xmlns:atom=""http://www.w3.org/2005/Atom"" xmlns:sy=""http://purl.org/rss/1.0/modules/syndication/"" xmlns:slash=""http://purl.org/rss/1.0/modules/slash/"" xmlns:itunes=""http://www.itunes.com/dtds/podcast-1.0.dtd"" xmlns:rawvoice=""http://www.rawvoice.com/rawvoiceRssModule/""  version=""2.0"">
 <channel>
 <title>{title}</title>
-<category>Music</category>
+<category>{podcastCategory}</category>
 <atom:link href=""{rss}"" rel=""self"" type=""application/rss+xml""/>
 <link>{baseUrl}</link>
 <description>{tagline}</description>
@@ -234,7 +250,7 @@ var rssHead = $@"<rss xmlns:content=""http://purl.org/rss/1.0/modules/content/""
     <url>{imageUrl}</url>
     <link>{baseUrl}</link>
 </image>
-<itunes:category text=""Music""></itunes:category>
+<itunes:category text=""{podcastCategory}""></itunes:category>
 <rawvoice:rating>TV-G</rawvoice:rating>
 <rawvoice:frequency>Weekly</rawvoice:frequency>
 <rawvoice:subscribe feed=""{rss}"" googleplay=""{rss}""/>";
@@ -248,8 +264,8 @@ count = episodes.Count;
 var revCount = episodes.Count;
 foreach (var episode in episodes)
 {
-    var url = $"{baseUrl}mp3/inteensingel{count:00}.mp3";
-    var localFile = $@"{localOutput}\mp3\inteensingel{count:00}.mp3";
+    var url = $"{baseUrl}mp3/{mp3Filename}{count:00}.mp3";
+    var localFile = $@"{localOutput}\mp3\{mp3Filename}{count:00}.mp3";
     var episodeTitle = $"Avsnitt {count:00}: {episode.Title}";
     var episodeDescription = $"I avsnitt {count} lyssnar Henrik och Anders på de låtar från {episode.Title} som aldrig släpptes på singel.";
 
