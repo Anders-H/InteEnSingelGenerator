@@ -2,7 +2,7 @@
 using InteEnSingelGenerator;
 
 // Input, output and podcast name.
-const string sourceFile = @"C:\Users\hbom\OneDrive\InteEnSingel\source.txt";
+const string sourceFile = @"C:\Users\hbom\OneDrive\InteEnSingel\inteensingel_source.txt";
 const string localOutput = @"C:\Users\hbom\OneDrive\InteEnSingel\Output"; // Note: No ending slash.
 const string title = "Inte en singel";
 const string authorEmail = "anders@winsoft.se";
