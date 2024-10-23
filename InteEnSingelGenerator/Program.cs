@@ -5,6 +5,8 @@ using InteEnSingelGenerator;
 const string bgColor = "#ddd";
 const string headerColor = "#111";
 const string textColor = "#333";
+const string linkColor = "#007";
+const string linkHoverColor = "#11a";
 const string sourceFile = @"C:\Users\hbom\OneDrive\InteEnSingel\inteensingel_source.txt";
 const string localOutput = @"C:\Users\hbom\OneDrive\InteEnSingel\Output"; // Note: No ending slash.
 const string title = "Inte en singel";
@@ -47,7 +49,7 @@ html, body {{ border: 0; margin: 0; padding: 0; background-color: {bgColor}; col
 div {{ text-align: center; margin: 0 auto 0 auto; padding: 10px 0 5px 0; width: 50%; min-width: 400px; max-width: 1000px; }}
 h1 {{ margin: 0; padding: 5px 0 5px 0; text-align: center; font-size: 50px; font-weight: normal; color: {headerColor}; display: none; }}
 .logo {{ display: block; padding: 0; margin: 0 auto 0 auto; width: [LOGO-SIZE]; height: auto; max-width: 500px; text-align: center; }}
-p {{ margin: 0; padding: 5px 0 5px 0; }} a {{ color: #007; text-decoration: none; }} a:hover {{ color: #11a; }}
+p {{ margin: 0; padding: 5px 0 5px 0; }} a {{ color: {linkColor}; text-decoration: none; }} a:hover {{ color: {linkHoverColor}; }}
 .tagline {{ padding: 5px 0 15px 0; font-style: italic; }} .headblock {{ padding: 5px 0 15px 0; font-weight: bold; }}
 .footblock {{ padding: 15px 0 5px 0; }}
 table {{ border: none; margin: 0; padding: 0; width: 100%; }}
@@ -73,8 +75,13 @@ var episodeSiteHead = $@"<!DOCTYPE html>
 <!-- Generated at {DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()} -->
 <title><!--EPISODE_TITLE--> - {title} - podcast med {showHosts.SpeakList()}</title>
 <style>
-html, body {{ border: 0; margin: 0; padding: 0; background-color: {bgColor}; color: {textColor}; font-family: arial, sans-serif; }} div {{ text-align: center; margin: 0 auto 0 auto; padding: 10px 0 5px 0; width: 50%; min-width: 400px; max-width: 1000px; }}
-h1 {{ margin: 0; padding: 5px 0 5px 0; text-align: center; font-size: 50px; font-weight: normal; color: {headerColor}; display: none; }} .logo {{ display: block; padding: 0; margin: 0 auto 0 auto; width: 70%; height: auto; max-width: 500px; text-align: center; }} p {{ margin: 0; padding: 5px 0 5px 0; }} a {{ color: #007; text-decoration: none; }} a:hover {{ color: #11a; }} .tagline {{ padding: 5px 0 15px 0; font-style: italic; }} .headblock {{ padding: 5px 0 15px 0; font-weight: bold; }} .footblock {{ padding: 15px 0 5px 0; }}
+html, body {{ border: 0; margin: 0; padding: 0; background-color: {bgColor}; color: {textColor}; font-family: arial, sans-serif; }}
+div {{ text-align: center; margin: 0 auto 0 auto; padding: 10px 0 5px 0; width: 50%; min-width: 400px; max-width: 1000px; }}
+h1 {{ margin: 0; padding: 5px 0 5px 0; text-align: center; font-size: 50px; font-weight: normal; color: {headerColor}; display: none; }}
+.logo {{ display: block; padding: 0; margin: 0 auto 0 auto; width: 70%; height: auto; max-width: 500px; text-align: center; }}
+p {{ margin: 0; padding: 5px 0 5px 0; }} a {{ color: {linkColor}; text-decoration: none; }} a:hover {{ color: {linkHoverColor}; }}
+.tagline {{ padding: 5px 0 15px 0; font-style: italic; }} .headblock {{ padding: 5px 0 15px 0; font-weight: bold; }}
+.footblock {{ padding: 15px 0 5px 0; }}
 table {{ border: none; margin: 0; padding: 0; width: 100%; }} td {{ vertical-align: top; text-align: center; margin: 2px; padding: 2px; font-weight: Thin; font-size: 20px; }}
 </style>
 </head>
