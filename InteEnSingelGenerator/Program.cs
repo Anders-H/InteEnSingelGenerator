@@ -2,6 +2,9 @@
 using InteEnSingelGenerator;
 
 // Input, output and podcast name.
+const string bgColor = "#ddd";
+const string headerColor = "#111";
+const string textColor = "#333";
 const string sourceFile = @"C:\Users\hbom\OneDrive\InteEnSingel\inteensingel_source.txt";
 const string localOutput = @"C:\Users\hbom\OneDrive\InteEnSingel\Output"; // Note: No ending slash.
 const string title = "Inte en singel";
@@ -10,16 +13,14 @@ const string authorEmailWithName = $"{authorEmail} (Anders Hesselbom)";
 const string mp3Filename = "inteensingel";
 const string podcastCategory = "Music";
 const string youTubeChannel = "https://youtube.com/@inteensingel4131/videos";
-
-// The URL used for marketing to listeners.
-const string baseUrlForVisitors = "https://inte_en_singel.80tal.se/";
-
-// The URL to the RSS when uploaded.
-const string rss = "https://80tal.se/inte_en_singel/rss.xml"; //
-
-// The URL that is covered by the SSL certificate.
-const string baseUrl = "https://www.80tal.se/inte_en_singel/";
-
+const string titleImage = "inteensingel2.jpg";
+const string tagline = "Vi lyssnar framgångsrik musik från etablerade artister, men vi hoppar över det som släpptes på singel. Vad finns mer, förutom det som spelas på radio? Här får du svaret! Finns där poddar finns, men inte på Spotify, för någon ordning vill vi ha.";
+const string episodeTagline = "I avsnitt <!--COUNT--> av podcasten med musik som melodiradion glömde lyssnar Henrik och Anders på de låtar från <!--EPISODE_TITLE--> som aldrig släpptes på singel.";
+const string baseUrlForVisitors = "https://inte_en_singel.80tal.se/"; // The URL used for marketing to listeners.
+const string rss = "https://80tal.se/inte_en_singel/rss.xml"; // The URL to the RSS when uploaded.
+const string baseUrl = "https://www.80tal.se/inte_en_singel/"; // The URL that is covered by the SSL certificate.
+const string donate = @"Bjud på en kopp kaffe (20:-) som tack för bra innehåll!<br /><br /><img src=""https://ahesselbom.se/img/swish.png"" style=""width: 30%; height: auto; min-width: 100px; max-width: 300px;""><br /><br />";
+const string twitterLinks = @"<b>Henrik Andersson på X (Twitter):</b> <a href=""https://twitter.com/commoflage_"" target=""_blank"">@commoflage_</a><br /><b>Anders Hesselbom på X (Twitter):</b> <a href=""https://twitter.com/ahesselbom"" target=""_blank"">@ahesselbom</a>";
 StringList showHosts = ["Henrik Andersson", "Anders Hesselbom"];
 
 var source = File.ReadAllLines(sourceFile);
@@ -39,11 +40,12 @@ var websiteHead = $@"<!DOCTYPE html>
 <link rel=""mask-icon"" href=""/safari-pinned-tab.svg"" color=""#5bbad5""> <meta name=""msapplication-TileColor"" content=""#da532c"">
 <meta name=""theme-color"" content=""#ffffff""> <meta name=""viewport"" content=""width=device-width, initial-scale=1"">
 <meta charset=""utf-8"" />
+<!-- Generated at {DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()} -->
 <title>{title} - podcast med {showHosts.SpeakList()}</title>
 <style>
-html, body {{ border: 0; margin: 0; padding: 0; background-color: #ddd; color: #333; font-family: arial, sans-serif; }}
+html, body {{ border: 0; margin: 0; padding: 0; background-color: {bgColor}; color: {textColor}; font-family: arial, sans-serif; }}
 div {{ text-align: center; margin: 0 auto 0 auto; padding: 10px 0 5px 0; width: 50%; min-width: 400px; max-width: 1000px; }}
-h1 {{ margin: 0; padding: 5px 0 5px 0; text-align: center; font-size: 50px; font-weight: normal; color: #111; display: none; }}
+h1 {{ margin: 0; padding: 5px 0 5px 0; text-align: center; font-size: 50px; font-weight: normal; color: {headerColor}; display: none; }}
 .logo {{ display: block; padding: 0; margin: 0 auto 0 auto; width: [LOGO-SIZE]; height: auto; max-width: 500px; text-align: center; }}
 p {{ margin: 0; padding: 5px 0 5px 0; }} a {{ color: #007; text-decoration: none; }} a:hover {{ color: #11a; }}
 .tagline {{ padding: 5px 0 15px 0; font-style: italic; }} .headblock {{ padding: 5px 0 15px 0; font-weight: bold; }}
@@ -55,8 +57,8 @@ td {{ vertical-align: top; text-align: center; margin: 2px; padding: 2px; font-w
 <body>
 <div>
 <h1>{title}</h1><img src=""logo.png"" alt=""{title}"" class=""logo"" />
-<p class=""tagline"">Podcast med {showHosts.SpeakList()}</p><p><img src=""inteensingel2.jpg"" alt=""{title}"" style=""width: 100%; height: auto;""/></p>
-<p class=""headblock"">Vi lyssnar framgångsrik musik från etablerade artister, men vi hoppar över det som släpptes på singel. Vad finns mer, förutom det som spelas på radio? Här får du svaret! Finns där poddar finns, men inte på Spotify, för någon ordning vill vi ha.</p>";
+<p class=""tagline"">Podcast med {showHosts.SpeakList()}</p><p><img src=""{titleImage}"" alt=""{title}"" style=""width: 100%; height: auto;""/></p>
+<p class=""headblock"">{tagline}</p>";
 
 // HTML template for the episode.
 var episodeSiteHead = $@"<!DOCTYPE html>
@@ -67,10 +69,12 @@ var episodeSiteHead = $@"<!DOCTYPE html>
 <meta name=""msapplication-TileColor"" content=""#da532c"">
 <meta name=""theme-color"" content=""#ffffff"">
 <meta name=""viewport"" content=""width=device-width, initial-scale=1"">
-<meta charset=""utf-8"" /> <title><!--EPISODE_TITLE--> - {title} - podcast med {showHosts.SpeakList()}</title>
+<meta charset=""utf-8"" />
+<!-- Generated at {DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()} -->
+<title><!--EPISODE_TITLE--> - {title} - podcast med {showHosts.SpeakList()}</title>
 <style>
-html, body {{ border: 0; margin: 0; padding: 0; background-color: #ddd; color: #333; font-family: arial, sans-serif; }} div {{ text-align: center; margin: 0 auto 0 auto; padding: 10px 0 5px 0; width: 50%; min-width: 400px; max-width: 1000px; }}
-h1 {{ margin: 0; padding: 5px 0 5px 0; text-align: center; font-size: 50px; font-weight: normal; color: #111; display: none; }} .logo {{ display: block; padding: 0; margin: 0 auto 0 auto; width: 70%; height: auto; max-width: 500px; text-align: center; }} p {{ margin: 0; padding: 5px 0 5px 0; }} a {{ color: #007; text-decoration: none; }} a:hover {{ color: #11a; }} .tagline {{ padding: 5px 0 15px 0; font-style: italic; }} .headblock {{ padding: 5px 0 15px 0; font-weight: bold; }} .footblock {{ padding: 15px 0 5px 0; }}
+html, body {{ border: 0; margin: 0; padding: 0; background-color: {bgColor}; color: {textColor}; font-family: arial, sans-serif; }} div {{ text-align: center; margin: 0 auto 0 auto; padding: 10px 0 5px 0; width: 50%; min-width: 400px; max-width: 1000px; }}
+h1 {{ margin: 0; padding: 5px 0 5px 0; text-align: center; font-size: 50px; font-weight: normal; color: {headerColor}; display: none; }} .logo {{ display: block; padding: 0; margin: 0 auto 0 auto; width: 70%; height: auto; max-width: 500px; text-align: center; }} p {{ margin: 0; padding: 5px 0 5px 0; }} a {{ color: #007; text-decoration: none; }} a:hover {{ color: #11a; }} .tagline {{ padding: 5px 0 15px 0; font-style: italic; }} .headblock {{ padding: 5px 0 15px 0; font-weight: bold; }} .footblock {{ padding: 15px 0 5px 0; }}
 table {{ border: none; margin: 0; padding: 0; width: 100%; }} td {{ vertical-align: top; text-align: center; margin: 2px; padding: 2px; font-weight: Thin; font-size: 20px; }}
 </style>
 </head>
@@ -78,7 +82,7 @@ table {{ border: none; margin: 0; padding: 0; width: 100%; }} td {{ vertical-ali
 <div>
 <h1>{title}</h1><img src=""../logo.png"" alt=""{title}"" class=""logo"" />
 <p class=""tagline"">Podcast med {showHosts.SpeakList()}</p><p><img src=""./cover.jpg"" style=""width: 100%; height: auto; max-width: 250px; max-height: 250px;""/></p>
-<p class=""headblock"">I avsnitt <!--COUNT--> av podcasten med musik som melodiradion glömde lyssnar Henrik och Anders på de låtar från <!--EPISODE_TITLE--> som aldrig släpptes på singel</p>";
+<p class=""headblock"">{episodeTagline}</p>";
 
 
 const string websiteLinks = @"<div style=""border-top: 1px solid #777777; margin-top: 30px; margin-bottom: 30px; padding-top: 30px;"">
@@ -89,15 +93,11 @@ const string youTubeLink = $@"<b>YouTube:</b> <a href=""{youTubeChannel}"" targe
 
 var websiteFootWithPagination = $@"<p class=""footblock""><!--PAGINATION--><br/><br/><b>RSS:</b> <a href=""{rss}"" target=""_blank"">{rss}</a><br /><br />
 {(string.IsNullOrWhiteSpace(youTubeChannel) ? "" : youTubeLink)}
-Bjud på en kopp kaffe (20:-) som tack för bra innehåll!<br /><br /><img src=""https://ahesselbom.se/img/swish.png"" style=""width: 30%; height: auto; min-width: 100px; max-width: 300px;""><br /><br />
-<b>Henrik Andersson på X (Twitter):</b> <a href=""https://twitter.com/commoflage_"" target=""_blank"">@commoflage_</a><br />
-<b>Anders Hesselbom på X (Twitter):</b> <a href=""https://twitter.com/ahesselbom"" target=""_blank"">@ahesselbom</a></p></div>{websiteLinks}</body></html>";
+{donate}{twitterLinks}</p></div>{websiteLinks}</body></html>";
 
 var websiteFootWithoutPagination = $@"<p class=""footblock""><b><a href=""https://inte_en_singel.80tal.se/"">Tillbaka till startsidan</a></b><br /><br /><b>RSS:</b> <a href=""{rss}"" target=""_blank"">{rss}</a><br /><br />
 {(string.IsNullOrWhiteSpace(youTubeChannel) ? "" : youTubeLink)}
-Bjud på en kopp kaffe (20:-) som tack för bra innehåll!<br /><br /><img src=""https://ahesselbom.se/img/swish.png"" style=""width: 30%; height: auto; min-width: 100px; max-width: 300px;""><br /><br />
-<b>Henrik Andersson på X (Twitter):</b> <a href=""https://twitter.com/commoflage_"" target=""_blank"">@commoflage_</a><br />
-<b>Anders Hesselbom på X (Twitter):</b> <a href=""https://twitter.com/ahesselbom"" target=""_blank"">@ahesselbom</a></p></div>{websiteLinks}</body></html>";
+{donate}{twitterLinks}</p></div>{websiteLinks}</body></html>";
 
 // The pagination system will have 10 episodes per page.
 var pagesCount = (int)Math.Ceiling(episodes.Count / 10.0);
@@ -218,7 +218,7 @@ for (var pageIndex = 0; pageIndex < pagesCount; pageIndex++)
 }
 
 // The RSS generator.
-var tagline = $"Podcasten {title} - om musiken som melodiradion glömde. {showHosts.SpeakList()} lyssnar på låtarna som aldrig blev någon singel.";
+var rssTagline = $"Podcasten {title} - om musiken som melodiradion glömde. {showHosts.SpeakList()} lyssnar på låtarna som aldrig blev någon singel.";
 var authors = showHosts.CommaList();
 const string imageUrl = $"{baseUrl}inte_en_singel.jpg";
 
@@ -228,7 +228,7 @@ var rssHead = $@"<rss xmlns:content=""http://purl.org/rss/1.0/modules/content/""
 <category>{podcastCategory}</category>
 <atom:link href=""{rss}"" rel=""self"" type=""application/rss+xml""/>
 <link>{baseUrl}</link>
-<description>{tagline}</description>
+<description>{rssTagline}</description>
 <lastBuildDate>{DateTime.Now.AddHours(-2):r}</lastBuildDate>
 <language>sv-SE</language>
 <sy:updatePeriod>weekly</sy:updatePeriod>
@@ -267,7 +267,7 @@ foreach (var episode in episodes)
     var url = $"{baseUrl}mp3/{mp3Filename}{count:00}.mp3";
     var localFile = $@"{localOutput}\mp3\{mp3Filename}{count:00}.mp3";
     var episodeTitle = $"Avsnitt {count:00}: {episode.Title}";
-    var episodeDescription = $"I avsnitt {count} lyssnar Henrik och Anders på de låtar från {episode.Title} som aldrig släpptes på singel.";
+    var episodeDescription = episodeTagline.Replace("<!--EPISODE_TITLE-->", episode.Title).Replace("<!--COUNT-->", count.ToString());
 
     swRss.Write($@"<item>
 <title>{episodeTitle}</title>
