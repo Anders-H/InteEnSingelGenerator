@@ -16,13 +16,13 @@ const string mp3Filename = "inteensingel";
 const string podcastCategory = "Music";
 const string youTubeChannel = "https://youtube.com/@inteensingel4131/videos";
 const string titleImage = "inteensingel2.jpg";
-const string tagline = "Vi lyssnar framgångsrik musik från etablerade artister, men vi hoppar över det som släpptes på singel. Vad finns mer, förutom det som spelas på radio? Här får du svaret! Finns där poddar finns, men inte på Spotify, för någon ordning vill vi ha.";
+const string tagline = "Vi lyssnar på framgångsrik musik från etablerade artister, men vi hoppar över det som släpptes på singel. Vad finns mer, förutom det som spelas på radio? Här får du svaret! Finns där poddar finns, men inte på Spotify, för någon ordning vill vi ha.";
 const string episodeTagline = "I avsnitt <!--COUNT--> av podcasten med musik som melodiradion glömde lyssnar Henrik och Anders på de låtar från <!--EPISODE_TITLE--> som aldrig släpptes på singel.";
 const string baseUrlForVisitors = "https://inte_en_singel.80tal.se/"; // The URL used for marketing to listeners.
 const string rss = "https://80tal.se/inte_en_singel/rss.xml"; // The URL to the RSS when uploaded.
 const string baseUrl = "https://www.80tal.se/inte_en_singel/"; // The URL that is covered by the SSL certificate.
-const string donate = @"Bjud på en kopp kaffe (20:-) som tack för bra innehåll!<br /><br /><img src=""https://ahesselbom.se/img/swish.png"" style=""width: 30%; height: auto; min-width: 100px; max-width: 300px;""><br /><br />";
-const string twitterLinks = @"<b>Henrik Andersson på X (Twitter):</b> <a href=""https://twitter.com/commoflage_"" target=""_blank"">@commoflage_</a><br /><b>Anders Hesselbom på X (Twitter):</b> <a href=""https://twitter.com/ahesselbom"" target=""_blank"">@ahesselbom</a>";
+const string donate = @"Bjud på en kopp kaffe (20:-) som tack för bra innehåll!<br /><br /><img src=""https://ahesselbom.se/img/swish.png"" style=""width: 30%; height: auto; min-width: 100px; max-width: 300px; box-shadow: 0 0 25px 8px #ffffff;""><br /><br />";
+const string twitterLinks = @"<b>Ny podcast!</b> Besök <b>&quot;Blev det en klassiker&quot;</b> för mer information!<br /><br /><b>Henrik Andersson på X (Twitter):</b> <a href=""https://twitter.com/commoflage_"" target=""_blank"">@commoflage_</a><br /><b>Anders Hesselbom på X (Twitter):</b> <a href=""https://twitter.com/ahesselbom"" target=""_blank"">@ahesselbom</a>";
 StringList showHosts = ["Henrik Andersson", "Anders Hesselbom"];
 
 var source = File.ReadAllLines(sourceFile);
